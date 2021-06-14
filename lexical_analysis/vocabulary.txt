@@ -1,0 +1,60 @@
+# TODO: complete with friedman's test vocabulary
+
+language symbols:
+-> "/*": opening a comment block
+-> "*/": closing a comment block
+-> "=": assignment operator
+-> "{": code block's start
+-> "}": code block's end
+-> "(": group operations, function parameters
+-> ")": group operations, function parameters
+-> ";": end sentences
+-> ",": separator
+-> ".": access data structure attributes
+-> ":": define sequences
+
+reserved words:
+-> load: csv files (yet to define)
+-> table: data structure
+-> block: data structure
+-> vector: data structure
+-> int: data type
+-> double: data type
+-> string: data type
+-> boolean: data type
+-> function: user's own measures
+-> continue, break, return
+-> sum, prod ?
+-> for, while, if, then, else, in
+-> print
+-> size
+-> rows
+-> columns
+-> range
+
+relational operators:
+-> ">" greater than
+-> "<" less than
+-> ">=" greater than or equal to
+-> "<=" less than or equal to
+-> "==" equal to
+-> "!=" not equal to
+
+aritmetic operators:
+-> + addition
+-> - substraction
+-> * multiplication
+-> / division
+-> ** power
+-> % modulo
+
+logical operators:
+-> and, or, not
+
+mathematical functions:
+-> sin, cos, tan, ctg, sec, csc
+-> abs, floor, ceil
+-> sqrt, ln, log, euler
+
+friedman's test:
+->
