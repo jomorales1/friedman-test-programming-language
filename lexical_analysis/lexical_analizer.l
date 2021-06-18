@@ -156,7 +156,7 @@ letter      [a-zA-Z]
 digit       [0-9]
 id          {letter}([_]|{letter}|{digit})*
 integer     {digit}+
-real        -?(({digit}+)|({digit}*\.{digit}+)([eE][-+]?{digit}+)?)
+real        (({digit}+)|({digit}*\.{digit}+)([eE][-+]?{digit}+)?)
 string      \"[^\n]*\"
 
 %%
