@@ -71,6 +71,12 @@
 #define ROWS 520
 #define COLS 521
 #define RANGE 522
+#define VARIANCE 523
+#define EXPECTED_VALUE 524
+#define COVARIANCE 525
+#define K 526
+#define K_STAR 527
+#define T 528
 
 /* required libraries */
 #include <stdio.h>
@@ -224,6 +230,12 @@ size        {write_token(SIZE); return SIZE;}
 rows        {write_token(ROWS); return ROWS;}
 cols        {write_token(COLS); return COLS;}
 range       {write_token(RANGE); return RANGE;}
+var         {write_token(VARIANCE); return MATH_FUNC;}
+ev          {write_token(EXPECTED_VALUE); return MATH_FUNC;}
+cov         {write_token(COVARIANCE); return MATH_FUNC;}
+k           {write_token(K); return MATH_FUNC;}
+k_star      {write_token(K_STAR); return MATH_FUNC;}
+t           {write_token(T); return MATH_FUNC;}
 {id}        {install_id(); return ID;}
 {integer}   {install_number(0); return I_NUMBER;}
 {real}      {install_number(1); return R_NUMBER;}
@@ -235,7 +247,6 @@ range       {write_token(RANGE); return RANGE;}
     yytext -> pointer to the beginning of the lexeme
     yyleng -> length of the lexeme found
     yylval -> shared variable with YACC, it holds the lexeme's attribute (simulate)
-
     TODO:
     -> Complete vocabulary and lexical categories with friedman's test
 */
@@ -355,6 +366,12 @@ void write_token(int code) {
         case 133:
         case 134:
         case 135:
+        case 523:
+        case 524:
+        case 525:
+        case 526:
+        case 527:
+        case 528:
             fprintf(yyout, "<math_func, '%s'>\n", yytext);
             break;
         case 519:

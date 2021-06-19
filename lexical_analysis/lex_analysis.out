@@ -1,0 +1,101 @@
+<comment>
+<function>
+<id, 0>
+<'('>
+<data_type, double>
+<id, 1>
+<')'>
+<'{'>
+<return>
+<'('>
+<math_func, 'sin'>
+<'('>
+<id, 1>
+<')'>
+<aritme_op, '+'>
+<math_func, 'cos'>
+<'('>
+<id, 1>
+<')'>
+<aritme_op, '*'>
+<i_number, 0>
+<')'>
+<aritme_op, '%'>
+<i_number, 1>
+<';'>
+<'}'>
+<id, 2>
+<'='>
+<load>
+<'('>
+<string, 0>
+<')'>
+<';'>
+<id, 2>
+<'.'>
+<math_func, 'var'>
+<id, 2>
+<'.'>
+<math_func, 'ev'>
+<id, 2>
+<'.'>
+<math_func, 'cov'>
+<id, 2>
+<'.'>
+<math_func, 'k'>
+<id, 2>
+<'.'>
+<math_func, 'k_star'>
+<id, 2>
+<'.'>
+<math_func, 't'>
+<data_type, int>
+<id, 3>
+<'='>
+<i_number, 2>
+<';'>
+<for>
+<'('>
+<data_type, block>
+<id, 4>
+<in>
+<id, 2>
+<')'>
+<'{'>
+<print>
+<'('>
+<id, 4>
+<'['>
+<i_number, 3>
+<']'>
+<'['>
+<i_number, 3>
+<']'>
+<')'>
+<';'>
+<'}'>
+<print>
+<'('>
+<id, 0>
+<'('>
+<r_number, 4>
+<')'>
+<')'>
+<';'>
+
+Symbol table - ids
+[0] -> user_f
+[1] -> value
+[2] -> data
+[3] -> variable
+[4] -> b
+
+Symbol table - numbers
+[0] -> 2
+[1] -> 100
+[2] -> 12
+[3] -> 1
+[4] -> 2.05
+
+Symbol table - strings
+[0] -> "path/to/file"
