@@ -99,11 +99,11 @@ typedef struct symbol_table {
 #define MAX_STRING_VALUE 32
 
 symbol_table* new_symbol_table() {
-    symbol_table *list = (symbol_table*) malloc(sizeof(symbol_table));
-    list->elements = (char**) malloc(INITIAL_CAPACITY * sizeof(char*));
-    list->capacity = INITIAL_CAPACITY;
-    list->size = 0;
-    return list;
+    symbol_table *table = (symbol_table*) malloc(sizeof(symbol_table));
+    table->elements = (char**) malloc(INITIAL_CAPACITY * sizeof(char*));
+    table->capacity = INITIAL_CAPACITY;
+    table->size = 0;
+    return table;
 }
 
 void insert(symbol_table *table, int index, char* value) {
