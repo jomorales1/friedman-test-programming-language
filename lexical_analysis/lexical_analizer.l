@@ -97,6 +97,7 @@ typedef struct symbol_table {
 #define INITIAL_CAPACITY 10
 #define MAX_TOSTRING 1024
 #define MAX_STRING_VALUE 32
+#define FAILURE 1
 
 symbol_table* new_symbol_table() {
     symbol_table *table = (symbol_table*) malloc(sizeof(symbol_table));
@@ -109,7 +110,7 @@ symbol_table* new_symbol_table() {
 void insert(symbol_table *table, int index, char* value) {
     if (index < 0 || index > table->size) {
         perror("Invalid index.\n");
-        exit(EXIT_FAILURE);
+        exit(FAILURE);
     }
     if (table->size == table->capacity) {
         char **new_array = (char**) malloc(2 * table->capacity * sizeof(char*));
@@ -388,7 +389,7 @@ void write_token(int code) {
             break;
         default:
             perror("Code not recognized\n");
-            exit(EXIT_FAILURE);
+            exit(FAILURE);
     }
 }
 
@@ -460,7 +461,7 @@ int install_string() {
 int main(int argc, char* argv[]) {
     /*if (argc < 2) {
         perror("Not enough arguments.\n");
-        exit(EXIT_FAILURE);
+        exit(FAILURE);
     }*/
 
     id_table = new_symbol_table();
@@ -473,14 +474,14 @@ int main(int argc, char* argv[]) {
     input = fopen("program.txt", "r");
     if (!input) {
         perror("Could not read input file.\n");
-        exit(EXIT_FAILURE);
+        exit(FAILURE);
     }
     yyin = input;
 
     output = fopen("lex_analysis.out", "w");
     if (!output) {
         perror("Could not open output file.\n");
-        exit(EXIT_FAILURE);
+        exit(FAILURE);
     }
     yyout = output;
 
