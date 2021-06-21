@@ -11,6 +11,7 @@
 #define DOT 409
 #define COMMA 410
 #define SEMICOLON 411
+#define COLON 412
 #define INT 101
 #define DOUBLE 102
 #define STR 103
@@ -71,12 +72,14 @@
 #define ROWS 520
 #define COLS 521
 #define RANGE 522
-#define VARIANCE 523
-#define EXPECTED_VALUE 524
-#define COVARIANCE 525
-#define K 526
-#define K_STAR 527
-#define T 528
+#define RANGE_M 523
+#define RANGE_V 524
+#define VARIANCE 525
+#define EXPECTED_VALUE 526
+#define COVARIANCE 527
+#define K 528
+#define K_STAR 529
+#define T 530
 
 /* required libraries */
 #include <stdio.h>
@@ -158,7 +161,7 @@ symbol_table *string_table;
 /* regular definitions */
 delim       [ \t\n]
 ws          {delim}+
-comment     \/\*[a-zA-Z0-9 \t\n]*\*\/
+comment     \/\*([^.]|.)*\*\/
 letter      [a-zA-Z]
 digit       [0-9]
 id          {letter}([_]|{letter}|{digit})*
@@ -186,6 +189,7 @@ string      \"[^\n]*\"
 "."         {write_token(DOT); return DOT;}
 ","         {write_token(COMMA); return COMMA;}
 ";"         {write_token(SEMICOLON); return SEMICOLON;}
+":"         {write_token(COLON); return COLON;}
 int         {write_token(INT); return DATA_TYPE;}
 double      {write_token(DOUBLE); return DATA_TYPE;}
 str         {write_token(STR); return DATA_TYPE;}
@@ -231,6 +235,8 @@ size        {write_token(SIZE); return SIZE;}
 rows        {write_token(ROWS); return ROWS;}
 cols        {write_token(COLS); return COLS;}
 range       {write_token(RANGE); return RANGE;}
+range_m     {write_token(RANGE_M); return RANGE_M;}
+range_v     {write_token(RANGE_V); return RANGE_V;}
 var         {write_token(VARIANCE); return MATH_FUNC;}
 ev          {write_token(EXPECTED_VALUE); return MATH_FUNC;}
 cov         {write_token(COVARIANCE); return MATH_FUNC;}
@@ -287,6 +293,9 @@ void write_token(int code) {
             break;
         case 411:
             fprintf(yyout, "<';'>\n");
+            break;
+        case 412:
+            fprintf(yyout, "<':'>\n");
             break;
         case 101:
         case 102:
@@ -367,12 +376,12 @@ void write_token(int code) {
         case 133:
         case 134:
         case 135:
-        case 523:
-        case 524:
         case 525:
         case 526:
         case 527:
         case 528:
+        case 529:
+        case 530:
             fprintf(yyout, "<math_func, '%s'>\n", yytext);
             break;
         case 519:
@@ -386,6 +395,12 @@ void write_token(int code) {
             break;
         case 522:
             fprintf(yyout, "<range>\n");
+            break;
+        case 523:
+            fprintf(yyout, "<range_m>\n");
+            break;
+        case 524:
+            fprintf(yyout, "<range_v>\n");
             break;
         default:
             perror("Code not recognized\n");
