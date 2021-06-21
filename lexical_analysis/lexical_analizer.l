@@ -32,6 +32,7 @@
 #define ELSE 511
 #define PRINT 512
 #define LOAD 513
+#define CONST 531
 #define GT 108
 #define LT 109
 #define GE 110
@@ -209,6 +210,7 @@ then        {write_token(THEN); return THEN;}
 else        {write_token(ELSE); return ELSE;}
 print       {write_token(PRINT); return PRINT;}
 load        {write_token(LOAD); return LOAD;}
+const       {write_token(CONST); return CONST;}
 "+"         {write_token(ADD); return ARITME_OP;}
 "-"         {write_token(SUB); return ARITME_OP;}
 "*"         {write_token(MUL); return ARITME_OP;}
@@ -341,6 +343,9 @@ void write_token(int code) {
             break;
         case 513:
             fprintf(yyout, "<load>\n");
+            break;
+        case 531:
+            fprintf(yyout, "<const>\n");
             break;
         case 108:
         case 109:

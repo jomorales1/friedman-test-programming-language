@@ -5,18 +5,21 @@
     Defining a variable
     For block 
 */
+
+const PI = 3.141595;
+
 function user_f(double value) {
     return (sin(value) + cos(value) * 2) % 100;
 }
 
 data = load("path/to/file");
 
-data.var
-data.ev
-data.cov
-data.k
-data.k_star
-data.t
+data.var;
+data.ev;
+data.cov;
+data.k;
+data.k_star;
+data.t;
 
 int variable = 12;
 
@@ -25,3 +28,9 @@ for (block b in data) {
 }
 
 print(user_f(2.05));
+
+if (variable == 2) then {
+    print("It's 12");
+} else {
+    print("It isn't 12");
+}
