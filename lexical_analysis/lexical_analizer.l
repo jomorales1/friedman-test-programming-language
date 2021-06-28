@@ -479,10 +479,10 @@ int install_string() {
     -> close input & output streams
 */
 int main(int argc, char* argv[]) {
-    /*if (argc < 2) {
+    if (argc < 2) {
         perror("Not enough arguments.\n");
         exit(FAILURE);
-    }*/
+    }
 
     id_table = new_symbol_table();
     number_table = new_symbol_table();
@@ -491,7 +491,7 @@ int main(int argc, char* argv[]) {
     FILE *input;
     FILE *output;
 
-    input = fopen("program.txt", "r");
+    input = fopen(argv[1], "r");
     if (!input) {
         perror("Could not read input file.\n");
         exit(FAILURE);
