@@ -20,7 +20,6 @@
 #define BLOCK 106
 #define TABLE 107
 #define DATA_TYPE 501
-#define FUNCTION 502
 #define IN 503
 #define CONTINUE 504
 #define BREAK 505
@@ -198,7 +197,6 @@ bool        {write_token(BOOL); return DATA_TYPE;}
 vector      {write_token(VECTOR); return DATA_TYPE;}
 block       {write_token(BLOCK); return DATA_TYPE;}
 table       {write_token(TABLE); return DATA_TYPE;}
-function    {write_token(FUNCTION); return FUNCTION;}
 in          {write_token(IN); return IN;}
 continue    {write_token(CONTINUE); return CONTINUE;}
 break       {write_token(BREAK); return BREAK;}
@@ -307,9 +305,6 @@ void write_token(int code) {
         case 106:
         case 107:
             fprintf(yyout, "<data_type, %s>\n", yytext);
-            break;
-        case 502:
-            fprintf(yyout, "<function>\n");
             break;
         case 503:
             fprintf(yyout, "<in>\n");
