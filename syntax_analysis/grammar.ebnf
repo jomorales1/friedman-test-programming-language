@@ -1,0 +1,24 @@
+block ::= (ifClause | forClause | whileClause | instruction)*
+ifClause ::= "if" "(" expression ")" "then" "{" block "}" ("else" ("if" "(" expression ")")? "{" block "}")* 
+forClause ::=  "for" "(" dataType names "in" names ")" "{" block "}"
+whileClause ::= "while" "(" expression ")" "{" block "}"
+funcDeclaration ::= dataType names "(" (dataType names ","?)* ")"  "{" block "}"
+relatOp ::= "==" | "!=" | "<" | "<=" | ">" | ">="
+aritmOp ::= "+" | "-" | "*" | "/" | "%" | "^"
+logicalOp ::= "and" | "or"
+binaryOp ::= relatOp | aritmOp | logicalOp | "in"
+unaryOp ::= "-" | "+" | "not" | e
+declaration ::= "const"? dataType names (assignment )?
+assignment ::= names? "=" expression 
+names ::= ([A-Z] | [a-z]) ([A-Z] | [a-z] | [0-9] | "_")*
+dataType ::= "int" | "double" | "str" | "boolean" | "vector" | "block" | "table"
+char ::= [http://www.w3.org/TR/xml#NT-Char]
+text ::= '"' (char)* '"'
+comment ::=  "/*" char* "*/"
+number ::= ((([0-9]+ "." [0-9]+)([eE][-+]?[0-9]+)?) | [0-9]+)
+item ::= names | number | boolean | friedman | function
+expression ::=  expression binaryOp expression | unaryOp expression | "(" expression ")" | item
+function ::= names "(" (((item | expression | text) ","?)+ | e) ")"
+instruction ::= (function | assignment | declaration | "break" | "continue" | "return" (item | text) ?) ";" 
+index ::= [0-9]+ | e
+friedman ::= names "." ("range" | "range_m" | "range_v") "[" index ":" index ":" index "]"

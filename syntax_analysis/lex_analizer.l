@@ -1,90 +1,11 @@
 %{
-/* definitions of manifest constants */
-#define COMMENT 401
-#define OPENING_PAR 402
-#define CLOSING_PAR 403
-#define OPENING_BR 404
-#define CLOSING_BR 405
-#define OPENING_SBR 406
-#define CLOSING_SBR 407
-#define ASSIGN_OP 408
-#define DOT 409
-#define COMMA 410
-#define SEMICOLON 411
-#define COLON 412
-#define INT 101
-#define DOUBLE 102
-#define STR 103
-#define BOOL 104
-#define VECTOR 105
-#define BLOCK 106
-#define TABLE 107
-#define DATA_TYPE 501
-#define IN 503
-#define CONTINUE 504
-#define BREAK 505
-#define RETURN 506
-#define FOR 507
-#define WHILE 508
-#define IF 509
-#define THEN 510
-#define ELSE 511
-#define PRINT 512
-#define LOAD 513
-#define CONST 531
-#define GT 108
-#define LT 109
-#define GE 110
-#define LE 111
-#define EQ 112
-#define NE 113
-#define RELAT_OP 514
-#define ADD 114
-#define SUB 115
-#define MUL 116
-#define DIV 117
-#define POW 118
-#define MOD 119
-#define ARITME_OP 515
-#define AND 120
-#define OR 121
-#define NOT 122
-#define LOGICAL_OP 516
-#define SIN 123
-#define COS 124
-#define TAN 125
-#define CTG 126
-#define SEC 127
-#define CSC 128
-#define ABS 129
-#define FLOOR 130
-#define CEIL 131
-#define SQRT 132
-#define LN 133
-#define LOG 134
-#define EULER 135
-#define MATH_FUNC 517
-#define ID 518
-#define I_NUMBER 601
-#define R_NUMBER 602
-#define STRING 603
-#define SIZE 519
-#define ROWS 520
-#define COLS 521
-#define RANGE 522
-#define RANGE_M 523
-#define RANGE_V 524
-#define VARIANCE 525
-#define EXPECTED_VALUE 526
-#define COVARIANCE 527
-#define K 528
-#define K_STAR 529
-#define T 530
-
 /* required libraries */
 #include <stdio.h>
 #include <errno.h>
 #include <string.h>
+#include "syntax_analizer.tab.h"
+
+#define YY_DECL int yylex()
 
 /* symbol tables - current position */
 unsigned int current_tid = 0;
@@ -305,6 +226,7 @@ void write_token(int code) {
         case 106:
         case 107:
             fprintf(yyout, "<data_type, %s>\n", yytext);
+            yylval.sval = yytext;
             break;
         case 503:
             fprintf(yyout, "<in>\n");
@@ -349,6 +271,7 @@ void write_token(int code) {
         case 112:
         case 113:
             fprintf(yyout, "<relat_op, '%s'>\n", yytext);
+            yylval.sval = yytext;
             break;
         case 114:
         case 115:
@@ -357,11 +280,13 @@ void write_token(int code) {
         case 118:
         case 119:
             fprintf(yyout, "<aritme_op, '%s'>\n", yytext);
+            yylval.sval = yytext;
             break;
         case 120:
         case 121:
         case 122:
             fprintf(yyout, "<logical_op, '%s'>\n", yytext);
+            yylval.sval = yytext;
             break;
         case 123:
         case 124:
@@ -383,24 +308,31 @@ void write_token(int code) {
         case 529:
         case 530:
             fprintf(yyout, "<math_func, '%s'>\n", yytext);
+            yylval.sval = yytext;
             break;
         case 519:
             fprintf(yyout, "<size>\n");
+            yylval.sval = yytext;
             break;
         case 520:
             fprintf(yyout, "<rows>\n");
+            yylval.sval = yytext;
             break;
         case 521:
             fprintf(yyout, "<cols>\n");
+            yylval.sval = yytext;
             break;
         case 522:
             fprintf(yyout, "<range>\n");
+            yylval.sval = yytext;
             break;
         case 523:
             fprintf(yyout, "<range_m>\n");
+            yylval.sval = yytext;
             break;
         case 524:
             fprintf(yyout, "<range_v>\n");
+            yylval.sval = yytext;
             break;
         default:
             perror("Code not recognized\n");
@@ -422,10 +354,12 @@ int install_id() {
     int find_lexeme = find(id_table, lexeme);
     if (find_lexeme != -1) {
         fprintf(yyout, "<id, %d>\n", find_lexeme);
+        yylval.ival = find_lexeme;
         return find_lexeme;
     }
     add_entry(id_table, lexeme);
     fprintf(yyout, "<id, %d>\n", current_tid);
+    yylval.ival = current_tid;
     current_tid++;
     return current_tid - 1;
 }
@@ -440,6 +374,7 @@ int install_number(int type) {
         } else {
             fprintf(yyout, "<r_number, %d>\n", find_lexeme);
         }
+        yylval.ival = find_lexeme;
         return find_lexeme;
     }
     add_entry(number_table, lexeme);
@@ -448,6 +383,7 @@ int install_number(int type) {
     } else {
         fprintf(yyout, "<r_number, %d>\n", current_tnum);
     }
+    yylval.ival = current_tnum;
     current_tnum++;
     return current_tnum - 1;
 }
@@ -458,58 +394,12 @@ int install_string() {
     int find_lexeme = find(string_table, lexeme);
     if (find_lexeme != -1) {
         fprintf(yyout, "<string, %d>\n", find_lexeme);
+        yylval.ival = find_lexeme;
         return find_lexeme;
     }
     add_entry(string_table, lexeme);
     fprintf(yyout, "<string, %d>\n", current_tstr);
+    yylval.ival = current_tstr;
     current_tstr++;
     return current_tstr - 1;
-}
-
-/*
-    main function:
-    -> open input & output files (if an error arise it stops
-    the program execution)
-    -> call the function yylex() to start lexical analysis
-    -> close input & output streams
-*/
-int main(int argc, char* argv[]) {
-    if (argc < 2) {
-        perror("Not enough arguments.\n");
-        exit(FAILURE);
-    }
-
-    id_table = new_symbol_table();
-    number_table = new_symbol_table();
-    string_table = new_symbol_table();
-
-    FILE *input;
-    FILE *output;
-
-    input = fopen(argv[1], "r");
-    if (!input) {
-        perror("Could not read input file.\n");
-        exit(FAILURE);
-    }
-    yyin = input;
-
-    output = fopen("lex_analysis.out", "w");
-    if (!output) {
-        perror("Could not open output file.\n");
-        exit(FAILURE);
-    }
-    yyout = output;
-
-    while (yylex()) {}
-    fclose(yyin);
-
-    fprintf(yyout, "\nSymbol table - ids\n");
-    print_elements(id_table);
-    fprintf(yyout, "\nSymbol table - numbers\n");
-    print_elements(number_table);
-    fprintf(yyout, "\nSymbol table - strings\n");
-    print_elements(string_table);
-    fclose(yyout);
-
-    return 0;
 }
